@@ -16,7 +16,9 @@ module.exports = {
       {
         test: /\.scss$/,
         loaders: ['style', 'css', 'sass']
-      }
+      },
+      { test: /\.json$/, loader: 'json-loader'},
+      { test: /\.ttf$/,  loader: "url-loader?limit=10000&mimetype=application/octet-stream" }
     ]
   },
   plugins: [
@@ -24,11 +26,13 @@ module.exports = {
       'process.env': {
         NODE_ENV: JSON.stringify('production')
       }
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress:{
-        warnings: true
-      }
     })
-  ]
+  ],
+  node: {
+      net: 'empty',
+      tls: 'empty',
+      dns: 'empty',
+      fs: "empty",
+      child_process: 'empty'
+    }
 };

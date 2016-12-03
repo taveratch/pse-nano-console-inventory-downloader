@@ -1,3 +1,68 @@
-h1 {
-  color : red;
+@font-face {
+  font-family: 'Sukhumvit';
+  font-weight: bold;
+  src: url('./fonts/sukhumvit-set/SukhumvitSet-Bold.ttf');
+}
+@font-face {
+  font-family: 'Sukhumvit';
+  font-weight: normal;
+  src: url('./fonts/sukhumvit-set/SukhumvitSet-Text.ttf');
+}
+
+html,body {
+  font-family: 'Sukhumvit' !important;
+}
+
+.row {
+  padding: 0;
+  margin: 0;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  justify-content: center;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-middle {
+  align-items: center;
+}
+.pull-right {
+  position: absolute;
+  right: 0
+}
+
+.padding-all {
+  padding: 15px;
+}
+
+.pull-top {
+  position: absolute;
+  top: 0
+}
+
+.full-height {
+  height: 100%;
+}
+
+.margin-left {
+  margin-left: 15px;
+}
+
+.margin-right {
+  margin-right: 15px;
+}
+
+.margin-bottom {
+  margin-bottom: 15px;
+}
+
+.margin-top {
+  margin-top: 15px;
 }
