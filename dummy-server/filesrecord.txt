@@ -1,0 +1,5 @@
+totalFiles[3]
+index(3)
+mmc:0:\Inventory\I24_20170731.csv
+mmc:0:\Inventory\I25_20170801.csv
+mmc:0:\Inventory\I26_20170802.csv

@@ -1,9 +1,16 @@
 import {USER, PASS} from './constants';
+import JSZip from 'jszip';
+import FileSaver from 'file-saver';
+require("babel-core/register");
+require("babel-polyfill");
+
+const PROXY = "https://cors-anywhere.herokuapp.com/";
+// const PROXY = "";
 let services = {
   getInventoryList: (url) => {
     return new Promise((resolve, reject) => {
       $.ajax({
-        url: "https://cors-anywhere.herokuapp.com/" + urlValidator(url),
+        url: PROXY + urlValidator(url),
         headers: {
         'Authorization' : 'Basic dXNlcjpwYXNz'
         } 
@@ -17,32 +24,37 @@ let services = {
       });
     });
   },
-  downloadInventory: (url) => {
-    return new Promise((resolve, reject) => {
-      $.ajax({
-                // `url` 
-                url: url,
-                type: "GET",
-                // `custom header`
-                headers: {
-                  'Authorization' : 'Basic dXNlcjpwYXNz'
-                },
-                success: function (data) {
-                    // `file download`
-                    $("a")
-                        .attr({
-                        "href": data.file,
-                            "download": "file.txt"
-                    })
-                        .html($("a").attr("download"))
-                        .get(0).click();
-                },
-                error: function (jqxhr, textStatus, errorThrown) {
-                  console.log(textStatus, errorThrown)
-                }
-            });
-    })
+  downloadAllInventories: async (inventories, dispatcher) => {
+    var zip = new JSZip();
+    for(let i=0; i<inventories.length; i++) {
+      let item = inventories[i];
+      dispatcher({type: 'downloaded_inventory', data: item.name});
+      let res = await downloadInventory(item.url);
+      zip.file(item.name, res);
+    }
+    zip.generateAsync({type:"blob"})
+    .then(function(content) {
+        FileSaver.saveAs(content, "inventories.zip");
+    });
   }
+};
+
+const downloadInventory = (url) => {
+  return new Promise((resolve, reject) => {
+      $.ajax({
+        url: PROXY + url,
+        headers: {
+        'Authorization' : 'Basic dXNlcjpwYXNz'
+        }
+      })
+      .done((res) => {
+        resolve(res);
+      })
+      .fail((err) =>{
+        console.log(err);
+        reject(err);
+      });
+    });
 };
 
 const urlValidator = (url) => {
@@ -55,7 +67,6 @@ const urlValidator = (url) => {
   } else {
     validatedUrl = `http://${url.substring(0)}/inventory/filesrecord.txt`;
   }
-  console.log("Hello " + validatedUrl);
   return validatedUrl;
 };
 

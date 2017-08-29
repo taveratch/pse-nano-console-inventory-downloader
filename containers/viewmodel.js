@@ -5,13 +5,22 @@ let vm = (state, action) => {
     case 'init':
       return {
         error: false,
-        inventories: []
+        inventories: [],
+        downloadedInventories: [],
+        downloading: false,
+        downloadAllButtonDisabled: true
       };
 		case 'load_inventory':
       state.error = false;
+      state.downloadAllButtonDisabled = false;
       state.inventories = dataFormatter(action.data, action.url);
       return state;
+    case 'downloaded_inventory':
+      state.downloading = true;
+      state.downloadedInventories.push(action.data);
+      return state;
     case 'error':
+      state.downloadAllButtonDisabled = true;
       state.error = true;
       state.inventories = [];
       return state;
@@ -26,7 +35,7 @@ const dataFormatter = (raw, domain) => {
   _.map(lines, (line, i) => {
     let url = line.substring(6);
     data.push({
-      url: insertHeader(getDomain(domain)) + url,
+      url: getDomain(domain) + url,
       name: url.substring(11)
     });
   });
@@ -44,4 +53,5 @@ const insertHeader = (url) => {
   return 'http://user:pass@' + url.substring(7);
 }
 
+vm.insertHeader = insertHeader;
 export default vm;

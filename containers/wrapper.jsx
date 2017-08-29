@@ -1,5 +1,6 @@
-import {Well, Label, Row, Col, Button, ListGroup, ListGroupItem} from 'react-bootstrap';
+import {Well, Label, Row, Col, Button, ListGroup, ListGroupItem, ProgressBar} from 'react-bootstrap';
 import vm from './viewmodel';
+import write from 'write';
 import service from '../js/service';
 export default class Wrapper extends React.Component {
 	constructor(props) {
@@ -28,47 +29,57 @@ export default class Wrapper extends React.Component {
     service.downloadInventory(url);
   }
 
+  downloadAll() {
+    service.downloadAllInventories(this.state.inventories, this.dispatch);
+  }
+
+  renderProgressbar(name) {
+    if(this.state.downloadedInventories.indexOf(name) < 0 && this.state.downloading)
+      return <ProgressBar active now={100} id={`progress-${name}`} label="Downloading..." />;
+    else if(this.state.downloadedInventories.indexOf(name) >= 0 && this.state.downloading)
+      return <ProgressBar bsStyle="success" now={100} id={`progress-${name}`} label="Downloaded" />;
+  }
+
 	render() {
     let errorView;
+    let self = this;
     if(this.state.error) {
       let url = $('#url')[0].value;
       errorView =
         <div>
-          <Label bsStyle="danger">An error occurs, Please make sure you are following these steps</Label>
-          <p className="margin-top">1. Insert the correct url</p>
-          <p>2. <a href="https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en" target="_blank">Chrome Cors Plugin</a> is installed</p>
-          <p>3. Login to nano console (If not <a href={url} target="_blank">Click here</a>)</p>
+          <Label bsStyle="danger">Url is incorrect.</Label>
+          <p className="margin-top">Please insert a correct url with port</p>
         </div>;
     }
 		return (
-			<div className="padding-all">
+			<div className="padding-all" style={{position: 'relative', minHeight: '100%'}}>
         <h1>Inventory Downloader</h1>
-        <Row>
-          <Well className="flex flex-column">
-            <div className="margin-bottom"><Label bsStyle="danger">Caution</Label></div>
-            <span>1. Install <a href="https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en" target="_blank">Chrome Cors Plugin</a> </span>
-            <span>2. Login to nano console first.</span>
-          </Well>
-        </Row>
 				<Row className="flex margin-bottom">
-					<input id="url" className="form-control"/>
+					<input id="url" className="form-control" placeholder="http://sysinto999.true.in.th:7878"/>
 					<button className="btn btn-default margin-left" onClick={this.read}>Read</button>
+          <button className="btn btn-default margin-left" disabled={this.state.downloadAllButtonDisabled} onClick={this.downloadAll.bind(this)}>Download all</button>
 				</Row>
         { errorView }
         <Row>
-          <ListGroup>
+          <ul className="list-group">
             {
-              _.map(this.state.inventories, (item) => {
-                return <ListGroupItem>
+              _.map(this.state.inventories, (item, i) => {
+                return <ul className="list-group-item">
                   {item.name}
                   <div className="pull-right pull-top full-height flex flex-center flex-middle margin-right">
-                    <a href={item.url} download >Download</a>
+                  { self.renderProgressbar(item.name) }
+                    <a href={vm.insertHeader(item.url)} download >Download</a>
                   </div>
-                </ListGroupItem>;
+                </ul>;
               })
             }
-          </ListGroup>
+          </ul>
         </Row>
+        <footer className="footer">
+          <div className="container">
+            <p className="text-muted">This software is a property of Padungsilpa Group.<br></br>© Copyright 2017 PADUNGSILPA GROUP All right reserved.</p>
+          </div>
+        </footer>
 			</div>
 		);
 	}
