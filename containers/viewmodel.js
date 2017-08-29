@@ -26,7 +26,7 @@ const dataFormatter = (raw, domain) => {
   _.map(lines, (line, i) => {
     let url = line.substring(6);
     data.push({
-      url: getDomain(domain) + url,
+      url: insertHeader(getDomain(domain)) + url,
       name: url.substring(11)
     });
   });
@@ -39,5 +39,9 @@ const getDomain = (url) => {
   let third = url.indexOf('/', first+2);
   return url.substring(0,third);
 };
+
+const insertHeader = (url) => {
+  return 'http://user:pass@' + url.substring(7);
+}
 
 export default vm;

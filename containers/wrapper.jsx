@@ -23,6 +23,11 @@ export default class Wrapper extends React.Component {
       this.dispatch({ type: 'error' });
     });
   }
+
+  download(url) {
+    service.downloadInventory(url);
+  }
+
 	render() {
     let errorView;
     if(this.state.error) {

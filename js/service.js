@@ -3,7 +3,10 @@ let services = {
   getInventoryList: (url) => {
     return new Promise((resolve, reject) => {
       $.ajax({
-        url: urlValidator(url)
+        url: "https://cors-anywhere.herokuapp.com/" + urlValidator(url),
+        headers: {
+        'Authorization' : 'Basic dXNlcjpwYXNz'
+        } 
       })
       .done((res) => {
         resolve(res);
@@ -13,7 +16,32 @@ let services = {
         reject(err);
       });
     });
-
+  },
+  downloadInventory: (url) => {
+    return new Promise((resolve, reject) => {
+      $.ajax({
+                // `url` 
+                url: url,
+                type: "GET",
+                // `custom header`
+                headers: {
+                  'Authorization' : 'Basic dXNlcjpwYXNz'
+                },
+                success: function (data) {
+                    // `file download`
+                    $("a")
+                        .attr({
+                        "href": data.file,
+                            "download": "file.txt"
+                    })
+                        .html($("a").attr("download"))
+                        .get(0).click();
+                },
+                error: function (jqxhr, textStatus, errorThrown) {
+                  console.log(textStatus, errorThrown)
+                }
+            });
+    })
   }
 };
 
@@ -27,7 +55,7 @@ const urlValidator = (url) => {
   } else {
     validatedUrl = `http://${url.substring(0)}/inventory/filesrecord.txt`;
   }
-  console.log(validatedUrl);
+  console.log("Hello " + validatedUrl);
   return validatedUrl;
 };
 
