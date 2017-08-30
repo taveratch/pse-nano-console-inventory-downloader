@@ -63,9 +63,9 @@ const urlValidator = (url) => {
     url = url.substring(0,url.length-1);
   }
   if(url.indexOf('http://') === 0) {
-    validatedUrl = `http://${url.substring(7)}/inventory/filesrecord.txt`;
+    validatedUrl = `//${url.substring(7)}/inventory/filesrecord.txt`;
   } else {
-    validatedUrl = `http://${url.substring(0)}/inventory/filesrecord.txt`;
+    validatedUrl = `//${url.substring(0)}/inventory/filesrecord.txt`;
   }
   return validatedUrl;
 };
