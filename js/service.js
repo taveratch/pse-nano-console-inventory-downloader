@@ -4,8 +4,8 @@ import FileSaver from 'file-saver';
 require("babel-core/register");
 require("babel-polyfill");
 
-const PROXY = "https://cors-anywhere.herokuapp.com/";
-// const PROXY = "";
+// const PROXY = "https://cors-anywhere.herokuapp.com/";
+const PROXY = "";
 let services = {
   getInventoryList: (url) => {
     return new Promise((resolve, reject) => {
