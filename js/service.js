@@ -5,7 +5,7 @@ require("babel-core/register");
 require("babel-polyfill");
 
 // const PROXY = "https://cors-anywhere.herokuapp.com/";
-const PROXY = "";
+let PROXY = "";
 let services = {
   getInventoryList: (url) => {
     return new Promise((resolve, reject) => {
@@ -36,6 +36,12 @@ let services = {
     .then(function(content) {
         FileSaver.saveAs(content, "inventories.zip");
     });
+  },
+  enableProxy: (isLocal) => {
+    if(isLocal)
+      PROXY = "";
+    else
+      PROXY = "https://cors-anywhere.herokuapp.com/";
   }
 };
 
@@ -63,9 +69,9 @@ const urlValidator = (url) => {
     url = url.substring(0,url.length-1);
   }
   if(url.indexOf('http://') === 0) {
-    validatedUrl = `//${url.substring(7)}/inventory/filesrecord.txt`;
+    validatedUrl = `http://${url.substring(7)}/inventory/filesrecord.txt`;
   } else {
-    validatedUrl = `//${url.substring(0)}/inventory/filesrecord.txt`;
+    validatedUrl = `http://${url.substring(0)}/inventory/filesrecord.txt`;
   }
   return validatedUrl;
 };

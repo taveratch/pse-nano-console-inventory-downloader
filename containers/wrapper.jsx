@@ -33,6 +33,12 @@ export default class Wrapper extends React.Component {
     service.downloadAllInventories(this.state.inventories, this.dispatch);
   }
 
+  onCheckboxChange(event) {
+    let checked = event.target.checked;
+    this.dispatch({type: 'to_local', data: checked});
+    service.enableProxy(checked);
+  }
+
   renderProgressbar(name) {
     if(this.state.downloadedInventories.indexOf(name) < 0 && this.state.downloading)
       return <ProgressBar active now={100} id={`progress-${name}`} label="Downloading..." />;
@@ -55,7 +61,10 @@ export default class Wrapper extends React.Component {
 			<div className="padding-all" style={{position: 'relative', minHeight: '100%'}}>
         <h1>Inventory Downloader</h1>
 				<Row className="flex margin-bottom">
-					<input id="url" className="form-control" placeholder="http://sysinto999.true.in.th:7878"/>
+          <input id="url" className="form-control" placeholder="http://sysinto999.true.in.th:7878"/>
+          <div className="checkbox-container">
+            <input type="checkbox" onChange={this.onCheckboxChange.bind(this)}/><span>LAN</span>
+          </div>
 					<button className="btn btn-default margin-left" onClick={this.read}>Read</button>
           <button className="btn btn-default margin-left" disabled={this.state.downloadAllButtonDisabled} onClick={this.downloadAll.bind(this)}>Download all</button>
 				</Row>

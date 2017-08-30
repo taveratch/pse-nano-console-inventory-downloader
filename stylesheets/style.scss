@@ -84,3 +84,13 @@ html,body {
 .list-group {
   margin-bottom: 80px;
 }
+
+.checkbox-container {
+
+  input {
+    margin: 0px 5px;
+  }
+
+  display: flex;
+  align-items: center;
+}

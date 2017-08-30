@@ -8,7 +8,8 @@ let vm = (state, action) => {
         inventories: [],
         downloadedInventories: [],
         downloading: false,
-        downloadAllButtonDisabled: true
+        downloadAllButtonDisabled: true,
+        isLocal: false
       };
 		case 'load_inventory':
       state.error = false;
@@ -18,6 +19,9 @@ let vm = (state, action) => {
     case 'downloaded_inventory':
       state.downloading = true;
       state.downloadedInventories.push(action.data);
+      return state;
+    case 'use_local':
+      state.isLocal = action.data;
       return state;
     case 'error':
       state.downloadAllButtonDisabled = true;
