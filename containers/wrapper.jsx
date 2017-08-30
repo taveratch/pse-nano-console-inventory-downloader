@@ -30,6 +30,7 @@ export default class Wrapper extends React.Component {
   }
 
   downloadAll() {
+    this.dispatch({type: 'start_downloading_all_inventory'});
     service.downloadAllInventories(this.state.inventories, this.dispatch);
   }
 

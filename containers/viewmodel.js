@@ -14,11 +14,14 @@ let vm = (state, action) => {
 		case 'load_inventory':
       state.error = false;
       state.downloadAllButtonDisabled = false;
+      state.downloading = false;
       state.inventories = dataFormatter(action.data, action.url);
       return state;
     case 'downloaded_inventory':
-      state.downloading = true;
       state.downloadedInventories.push(action.data);
+      return state;
+    case 'start_downloading_all_inventory':
+      state.downloading = true;
       return state;
     case 'use_local':
       state.isLocal = action.data;

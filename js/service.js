@@ -4,8 +4,8 @@ import FileSaver from 'file-saver';
 require("babel-core/register");
 require("babel-polyfill");
 
-// const PROXY = "https://cors-anywhere.herokuapp.com/";
-let PROXY = "";
+let PROXY = "https://cors-anywhere.herokuapp.com/";
+
 let services = {
   getInventoryList: (url) => {
     return new Promise((resolve, reject) => {
@@ -28,9 +28,9 @@ let services = {
     var zip = new JSZip();
     for(let i=0; i<inventories.length; i++) {
       let item = inventories[i];
-      dispatcher({type: 'downloaded_inventory', data: item.name});
       let res = await downloadInventory(item.url);
       zip.file(item.name, res);
+      dispatcher({type: 'downloaded_inventory', data: item.name});
     }
     zip.generateAsync({type:"blob"})
     .then(function(content) {
