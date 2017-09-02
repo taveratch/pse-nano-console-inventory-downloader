@@ -1,6 +1,10 @@
 import User from 'models/User';
 import Database from 'utils/database';
+import jwt from 'jsonwebtoken';
 import _ from 'lodash';
+
+const SECRET = 'fiowjf8dvn213s!k!dc!nopq~iod3123==';
+
 class AuthController {
 
     async signin(email, password) {
@@ -72,14 +76,14 @@ class AuthController {
     }
 
     createToken(user) {
-        return jwt.sign(user, secret['secret'], {
+        return jwt.sign(user, SECRET, {
             expiresIn: 1440*60 //24 hours
         });
     }
 
     verifyToken(token) {
         return new Promise((resolve, reject) => {
-            jwt.verify(token, secret['secret'], (err, decoded) => {
+            jwt.verify(token, SECRET, (err, decoded) => {
                 if(err)
                     reject(null);
                 else
