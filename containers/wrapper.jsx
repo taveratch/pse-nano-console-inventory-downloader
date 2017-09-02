@@ -1,3 +1,4 @@
+import React from 'react';
 import {Well, Label, Row, Col, Button, ListGroup, ListGroupItem, ProgressBar} from 'react-bootstrap';
 import vm from './viewmodel';
 import write from 'write';
@@ -94,5 +95,3 @@ export default class Wrapper extends React.Component {
 		);
 	}
 }
-ReactDOM.render(
-	<Wrapper/>, document.getElementById('app'));
